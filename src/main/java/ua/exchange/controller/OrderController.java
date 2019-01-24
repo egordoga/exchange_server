@@ -36,15 +36,15 @@ public class OrderController {
         this.assembler = assembler;
     }
 
-    @GetMapping("/{name}/{price}/{quantity}/{sellerStr}")
-    public Resources<Resource<Orderr>> order(@PathVariable("name") String name,
+    @GetMapping("/{name}/{price}/{quantity}/{isSeller}")
+    public Resources<Resource<Orderr>> order(@PathVariable String name,
                                              @PathVariable String price,
                                              @PathVariable String quantity,
-                                             @PathVariable Boolean sellerStr) {
+                                             @PathVariable Boolean isSeller) {
 
         Product product = mainService.productByName(name);
         List<Resource<Orderr>> orders;
-        if (sellerStr) {
+        if (isSeller) {
             orders = mainService.ordersForSeller(product, new BigDecimal(price)).stream()
                     .map(assembler::toResource).collect(Collectors.toList());
         } else {
@@ -52,7 +52,7 @@ public class OrderController {
                     .map(assembler::toResource).collect(Collectors.toList());
         }
         return new Resources<>(orders,
-                linkTo(methodOn(OrderController.class).order(name, price, quantity, sellerStr)).withSelfRel());
+                linkTo(methodOn(OrderController.class).order(name, price, quantity, isSeller)).withSelfRel());
     }
 
     @GetMapping("/{id}")
