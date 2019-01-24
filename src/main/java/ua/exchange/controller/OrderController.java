@@ -69,7 +69,7 @@ public class OrderController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ResourceSupport> complete(@PathVariable Long id, @RequestBody Orderr resource) {
+    public ResponseEntity<ResourceSupport> updateOrder(@PathVariable Long id, @RequestBody Orderr resource) {
 
         Product product = mainService.productByName(resource.getProduct().getName());
         if (product == null) {
@@ -86,7 +86,7 @@ public class OrderController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> delete(@PathVariable Long id, Principal principal) {
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id, Principal principal) {
 
         Orderr order = mainService.orderById(id).orElseThrow(() -> new OrderNotFoundException(id));
         if (order.getParticipant().getName().equals(principal.getName())) {
